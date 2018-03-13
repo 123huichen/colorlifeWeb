@@ -1,0 +1,1378 @@
+<!--头部导航栏-->
+<div class="busi-info" style="height: 66px;"> 
+	<div class="busi-info-icon"> </div> 
+	<ul class="busi-info-tab set_tab" style="padding-left: 244px;">
+		<li id="license" class="busi-info-item"><span><i class="fa fa-home"></i> 证照信息</span></li>
+		<li id='signature' class="busi-info-item"><span><i class="fa fa-drivers-license"></i> 电子签章</span></li>
+		<li id="management" class="busi-info-item"><span><i class="fa fa-user-circle-o"></i> 管理员</span></li>	
+	</ul> 
+</div>
+<!--树状图显示列表-->
+<div class="page-aside tree-box">
+	<ul id="treeDemo" class="ztree"></ul>
+</div>
+	
+	
+<!-- 证照系统-->
+<div id="licenseBlock">	
+	<!--详细信息显示div-->
+	<div class="page-main">
+	    <!--工商信息基本信息字段-->	
+		<div class="bjui-row col-2" id="legal_ups">
+			<label for="CompanyName" class="row-label">公司</label>
+			<div class="row-input" id="CompanyName" style=" line-height: 31px;"></div>
+			<form id="myform"  method="POST" data-toggle="ajaxform" name="myform" enctype="multipart/form-data" style="margin-bottom: 60px;">
+				<input type="hidden" id="cNameA" name="cName" value="">
+				<input type="hidden" id="regNum" name="regNum" value="">
+				<input type="hidden" id="orgCode" name="orgCode" value="">
+				<label class="row-label">组织类型</label>
+		        <div class="row-input required" style=" width: 70%;">
+		            <select class="license-select" data-width="200" id="orgType" name="orgType" data-rule="required" >
+		                <option value="0" >--请选择--</option>
+		            </select>
+				</div>
+				<label class="row-label">地区</label>
+		        <div class="row-input required" id="city_5" style="width: 70%;">	
+					<select class="license-select" id="province" name="province" onchange="licenseManagement.doAddCity(this.options[this.options.selectedIndex].id)" data-rule="required"></select>
+					<select class="license-select" id="city" name="city"  onchange="licenseManagement.doAddArea(this.options[this.options.selectedIndex].id)" data-rule="required"></select>
+					<select class="license-select" id="region" name="region" data-rule="required"></select>
+				</div>
+				<label class="row-label">所属管理架构</label>
+		        <div class="row-input required" id="organi-stru" style="width:35%;position: relative;">	
+		        	<input type="hidden" name="manageOrgUuid" id="manageId" value=""/>
+		        	<input type="text" name="" id="manageName" readonly="readonly" value="" data-rule="required"/>
+		            <div class="DropdownMenuBackground" id="manageZtreeDiv">
+		    			<ul id="manageZtreelicen" class="ztree"></ul>
+		    		</div>
+				</div></br>
+				<input name="orgUuid" id="orgUuid" type="hidden">
+				<input name="id" id="id" type="hidden">
+				<input name="legalPersonId" id="legalPersonId" type="hidden"/>
+				<label class="row-label">统一社会信用代码</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="uscCode" type="text" name="uscCode" placeholder="请输入统一信用代码" maxlength="20" data-rule="required;upletterandnumber">
+				</div>
+				<label class="row-label">完整注册地址</label>
+		        <div class="row-input required" style="width: 70%;">
+		            <input id="address" type="text" name="address" placeholder="请输入注册地址" maxlength="500" data-rule="required">
+		        </div>
+				<label class="row-label">法定代表人</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="legalName" type="text" name="legalName" placeholder="请输入法定代表人" maxlength="20" data-rule="required">
+				</div>
+				<label class="row-label">法人代表姓名</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="legalPerson" type="text" name="legalPerson" placeholder="请输入法人代表姓名" data-rule="required">
+				</div>
+				<label class="row-label">法人代表证件类型</label>
+		        <div class="row-input" style="width: 70%;">
+		            <select class="license-select" data-toggle="" data-width="200" id="identityType" name="identityType" >
+		                <option value="0">身份证</option>
+		                <option value="1">护照</option>
+		                <option value="B">港澳居民往来内地通行证</option>
+		                <option value="P">外国人永久居留证</option>
+		            </select>
+				</div>
+				<label class="row-label">法人代表证件号码</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="identity" type="text" name="identity" placeholder="请输入法人代表证件号码" maxlength="50">
+				</div>
+				<label class="row-label">企业联系人手机号码</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="phone" type="text" name="phone" placeholder="企业联系人手机号码" data-rule="required;mobile"/>
+				</div>
+				<label class="row-label">注册资本</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="capital" type="text" name="capital" placeholder="注册资本" maxlength="20" data-rule="required;number" style=" width: 50%;"> 万
+				</div>
+				<label class="row-label">成立日期</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="eDate" type="text" readonly="readonly" name="eDate" data-toggle="datepicker" data-pattern="yyyy-MM-dd"  data-rule="required;date"/>
+				</div>
+				<label class="row-label">营业期限</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="startDate" type="text" readonly="readonly" name="startDate" data-toggle="datepicker" data-pattern="yyyy-MM-dd"  data-rule="required;date" style=" width: 50%;">至 
+					<input id="endDate" type="text" readonly="readonly" name="endDate" data-toggle="datepicker"	data-pattern="yyyy-MM-dd" style=" width: 50%;">
+				</div>
+				<label class="row-label">经营范围</label>
+				<div class="row-input" style="width: 70%;">
+					<textarea id="licScope" name="licScope" rows="5" cols="" ></textarea>
+				</div>
+				<label class="row-label">登记机关</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="ra" type="text" name="ra" placeholder="请输入登记机关" maxlength="100" data-rule="required">
+				</div>
+				<label class="row-label">发照日期</label>
+				<div class="row-input required" style="width: 70%;">
+					<input id="aDate" type="text" name="aDate" readonly="readonly" data-toggle="datepicker" data-pattern="yyyy-MM-dd"  data-rule="required;date"/>
+				</div>
+				<input type="hidden" name="picturebackfill" id="picturebackfill" value="" />
+				<div style="height: 170px;">   
+				<label class="row-label" style="line-height: 40px;">附件上传</label>
+					<div class="input-group row" style=" margin-top: -50px; margin-left: 17.5%; width: 70%;">
+						<div id="uploaderBox" onclick="licenseManagement.setupinputFile(this);">
+							<!--<input type="file" name="file" id="doc" multiple="multiple"  style="width:150px; opacity: 0; height: 40px;"  accept="image/jpeg, image/jpg,image/png" />-->
+						</div>
+						<div id="fileDiv" style="display: none"></div>
+						<div id="dd" style=" width:100%;"></div>
+		            </div>
+               	</div>
+               	<input type="file" name="file" accept="image/*" style="display: none;"/>
+				<label class="row-label">备注</label>
+				<div class="row-input" style="width: 70%;">
+					<textarea name="remark" rows="5" cols="" id="remark"></textarea>
+				</div>
+				<div class="clearfix"></div>
+				<div class="text-center" style="margin-top: 15px;">
+					<button type="submit" class="btn-default btn" data-icon="save" style="margin-right: 15px;" onclick="doSaveLegalPersonDetails();"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;
+					<div style="width: 60px;" class="btn-close btn font-spacing" id="businesScancel"><i class="fa fa-close"></i> 取消</div>
+				</div>
+			</form> 
+		</div>
+		
+		<!--工商信息基本信息返回数据展示-->
+		<div id="CorpoInform">
+			<div style="padding: 0 20px 0px;">
+				<div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+					<span class="corpo-inform-title">工商信息</span> 
+					<a href="javascript:;" style="float: right;" onclick="licenseManagement.businInformModify();">
+						<i class="fa fa-edit"></i>编辑
+					</a>
+				</div>
+				<div class="busin-infor-box"><p class="busin-right">企业名称：</p><p class="busin-left" id="name1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">组织类型：</p><p class="busin-left" id="orgType1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">地区：</p><p class="busin-left" id="area"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">所属管理架构：</p><p class="busin-left" id="mangeOrgUuid1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">统一信用代码：</p><p class="busin-left" id="uscCode1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">完整注册地址：</p><p class="busin-left" id="address1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">法定代表人：</p><p class="busin-left" id="legalName1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">法人代表姓名：</p><p class="busin-left" id="legalPerson1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">法人代表证件类型：</p><p class="busin-left" id="legalPersonIdentityType1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">法人代表证件号码：</p><p class="busin-left" id="legalPersonIdentity1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">企业联系人手机号码：</p><p class="busin-left" id="contactMobile1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">注册资本：</p><p class="busin-left" id="capital1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">发照日期：</p><p class="busin-left" id="aDate1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">成立日期：</p><p class="busin-left" id="eDate1"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">营业期限：</p><p class="busin-left" id="OperatingPeriod"></p></div>
+				<div class="busin-infor-box"><p class="busin-right">登记机关：</p><p class="busin-left" id="ra1"></p></div>
+				<div class="busin-infor-Mbox"><p class="busin-right table-infor">经营范围：</p><p class="busin-left table-infor" id="licScope1"></p></div>
+				<div class="busin-infor-img">
+					<div class="busin-right table-infor">附件：</div>
+					<div class="busin-left" style="line-height: 170px;margin-top: 5px;" id="documentBisplay"></div>
+				</div>
+				<div class="busin-infor-Mbox"><p class="busin-right table-infor">备注：</p><p class="busin-left table-infor" id="remark1"></p></div>
+			    
+				<!--股东信息-->
+				<div id="Shareholder">
+					<div class="shareholderDiv">
+						<span class="shareholder-title">股东信息</span> 
+						<a href="javascript:;" style="float: right;" onclick="licenseManagement.shareInformModify();">
+							<i class="fa fa-edit"></i>编辑
+						</a>
+					</div>				    
+				    <table class="table type-setting">
+						<thead>
+							<tr>
+								<th class="angle-left" rowspan="2">序号</th>
+								<th rowspan="2" >股东</th>
+								<th rowspan="2" >认缴出资</th>
+								<th class="angle-right" rowspan="2">实缴出资</th>
+							</tr>
+						</thead>
+						<tbody id="tbMain"></tbody>
+					</table>
+				</div>
+			</div>
+
+			<div style="margin-top:20px;padding-left: 20px;">
+				<input id="checkboxTime" name="checkboxTime" type="checkbox" value=""/>
+				<span id="remindTimeInfo">开启证照到期提醒</span>
+				<span id="remindTime" style="display:none;">
+					<a><b style="margin-bottom:0px;padding-left:20px;" id="systemTime">查看详细设置</b></a>
+				</span>
+			</div>
+			
+		</div>	
+		<!--工商信息基本信息返回数据展示结束-->
+		
+		<!--时间提醒-->
+		<div id="timeReminder" class="bjui-row col-2">
+			<form id="timeReminderForm" name="timeReminderForm" data-toggle="ajaxform" method="GET" enctype="multipart/form-data">
+				<label class="row-label">收件人</label>
+				<div class="row-input required" style="width: 70%; position:relative;">
+					<input id="timeSearch" type="text" placeholder="请输入接收邮件的OA账号" class="contractName">
+					<div id="emlieTempInfo" style="position:absolute;top:4px;">
+					</div>
+					<input id="oaListTime" name="oaList" type="hidden">
+					<input id="lidTime" name="lid" type="hidden">
+					<ul id="timeSearchInfo"></ul>
+				</div>
+				<label class="row-label">到期时间</label>
+				<div class="row-input" style="width: 70%;">
+					<input id="timeEnd" name="time"  type="text" readonly="readonly" class="contractDatetime" data-toggle="datepicker" data-pattern="yyyy-MM-dd HH:mm:ss" data-rule="required;datetime">
+				</div>
+				<label class="row-label">到期前</label>
+				<div class="row-input" style="width: 70%;">
+					<input id="daysTime" name="days" type="text" style="width: 200px;" placeholder="请输入提醒时间"> <span> 天发送提醒邮件</span>
+				</div>
+				<label class="row-label">邮件内容</label>
+				<div class="row-input" style="width: 70%;">
+					<textarea id="bodytime" name="body" rows="5" cols="" placeholder="请输入邮寄内容"></textarea>
+				</div>
+				<div class="text-center" style="margin-top: 15px;">
+					<button id="timeReminderBtn" type="submit" class="btn-default btn" data-icon="save" id="" style="margin-right: 15px;">
+						<i class="fa fa-save"></i> 提&nbsp;交
+					</button>
+					&nbsp;&nbsp;
+					<div class="btn-close btn font-spacing" data-icon="close" id="timeReminderScancel">
+						<i class="fa fa-close"></i> 返&nbsp;回
+					</div>
+				</div>
+			</form>
+		</div>
+		<!--时间提醒结束-->
+		
+		<!--股东信息-->
+		<div id="sharInfor">
+			<div class="sharinfor-container bjui-row col-2">
+				<form id="inforform" name="inforform" data-toggle="ajaxform">
+					<input type="hidden" name="licenseId" id="licenseId" value="">
+					<input type="hidden" name="type" placeholder="" id="shareholderType">
+					<label class="row-label">股东</label>
+					<div class="row-input required" style="width: 70%;">
+						<input style="width: 90%;" type="text" name="name" id="shareholderName" placeholder="股东" data-rule="required">
+					</div>
+					<label class="row-label">认缴出资</label>
+					<div class="row-input required" style="width: 70%;">
+						<input style="width: 90%;" type="text" name="fund" id="fund" placeholder="认缴出资" data-rule="required;number">
+						<span>万元</span>
+					</div>
+					<label class="row-label">实缴出资</label>
+					<div class="row-input required" style="width: 70%;">
+						<input style="width: 90%;" type="text" name="realFund" id="realFund" placeholder="实缴出资" data-rule="required;number">
+						<span>万元</span>
+					</div>
+	                <div class="text-center" style="margin-top: 15px;">
+				        <button type="submit" class="btn-default btn" data-icon="save" style="margin-right: 15px;" onclick="licenseManagement.doSaveShareholderInformation();"> <i class="fa fa-save"></i> 保存</button> &nbsp;&nbsp; 
+				        <div class="btn-close btn font-spacing" data-icon="close" onclick="licenseManagement.doSaveLicSha();"><i class="fa fa-close"></i> 返回</div>
+					</div>
+				</form>
+			</div>
+			<!--股东信息结束--> 
+			
+			<div id="Shareholder1">
+			    <table class="table type-setting">
+					<thead>
+						<tr>
+							<th class="angle-left" rowspan="2">序号</th>
+							<th rowspan="2" >股东</th>
+							<th rowspan="2" >认缴出资</th>
+							<th rowspan="2" >实缴出资</th>
+							<th class="angle-right" rowspan="2">操作</th>
+						</tr>
+					</thead>
+					<tbody id="inquireShareholder"></tbody>
+				</table>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<!-- 电子签章 -->
+<div id='signatureBlock'>
+	<!--添加合同弹窗-->
+	<div id="uploadContract" class="bjui-row col-2 signature-row">
+		<form id="formContract" name="formContract" data-toggle="ajaxform" method="POST" enctype="multipart/form-data">
+			<div>
+				<label class="row-label">标题</label>
+				<p class="row-input" style="width: 70%;">
+					<input id="cname" type="text" placeholder="标题" name="title" data-rule="required">
+					<!-- 合同ID -->
+					<input id="cuuidA" type="hidden" name="id" >
+					<!-- 法人架构ID orgUuid -->
+					<input id="orgUuidA" type="hidden" name="orgUuid" >
+				</p>
+			</div>
+
+			<div>
+				<label class="row-label">合同有效期</label>
+				<p class="row-input" style="width: 70%;">
+					<input id="deadline" readonly="readonly" type="text" class="contractDatetime" name="deadline" data-toggle="datepicker" data-pattern="yyyy-MM-dd HH:mm:ss" data-rule="required;datetime">
+				</p>
+			</div>
+			
+			<div id="PDF_block">
+				<label class="row-label">PDF合同文件</label>
+				<p class="row-input">
+					<input id="fileContract" type="file" placeholder="名称" name="file" multiple="multiple" accept=".pdf">
+					<input id="fileNameCon" type="hidden" placeholder="文件名称" name="fileName">
+					<input id="nameCon" type="hidden" placeholder="添加时间" name="name">
+				</p>
+			</div>
+			<div>
+				<label class="row-label">说明</label>
+				<p class="row-input" style="width: 70%;">
+					<textarea name="summary" rows="5" cols="" id="summaryA"></textarea>
+				</p>
+			</div>
+			
+			<div class="text-center" style="margin-top: 15px;">
+				<button type="submit" class="btn-default btn" data-icon="save" id="submitContract" style="margin-right: 15px;">
+					<i class="fa fa-save"></i> 提&nbsp;交
+				</button>
+				&nbsp;&nbsp;
+				<div class="btn-close btn" data-icon="close" id="returnContract">
+					<i class="fa fa-close" style="padding-right:6px;"></i> 返&nbsp;回
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- 合同 -->
+	<div id="contractBlock" class="contract-block">
+		<div style="padding:20px 0px;">
+			<select class="input-signa-heigth" style="border-radius:6px; padding:0 5px" onchange = "electronicSignature.searchConState(this)">
+				<option value="-1"> 全部  </option>
+				<option value="0"> 未签署 </option>
+				<option value="1"> 签署中 </option>
+				<option value="2"> 已完成 </option>
+			</select>	
+			<div class="btn-group" role="group" style="padding:0 20px">
+				<input id="searchConSkey" type="text" class="input-signa-heigth" placeholder="按关键字搜索">
+			</div>	
+			<div class="btn-group" role="group" style="margin-right:10px">
+				<button id="searchCon" type="button" class="btn btn-blue but-signa">搜索</button>
+			</div>	
+			<div class="btn-group" role="group" style="margin-right:10px">
+				<button type="button" class="btn but-signa" id="managementSeal">印章管理</button>
+			</div>
+			<div class="btn-group" role="group" style="margin-right:10px">
+				<button type="button" class="btn but-signa" id="certificateCA">CA证书</button>
+			</div>
+			<div class="btn-group" role="group" style="float:right;">
+				<button type="button" class="btn btn-blue but-signa" id="addContract">添加合同</button>
+			</div>
+		</div>
+
+		<div class="heightContract" style="overflow: auto;">
+			<table class="type-setting tab-container">
+				<thead id="table-signa">
+					<tr>
+						<th class="angle-left" rowspan="2">序号</th>
+						<th rowspan="2" >标题</th>
+						<th rowspan="2" >名称</th>
+						<th rowspan="2" >状态</th>
+						<th class="angle-right" rowspan="2" >操作</th>
+					</tr>
+				</thead>
+				<tbody id="tbodyContract">
+				</tbody>
+			</table>
+		</div>
+		<!--分页-->
+		 <ul class="ant-pagination">
+			<li id = "incrementContract" title="上一页" class="ant-pagination-disabled ant-pagination-prev">&lt;  </li>
+			<li id = "pageIndexContract" class="ant-pagination-item-active ant-pagination-item ant-pagination-item-1"></li>
+			<li id = "decreasingContract" title="下一页" class="ant-pagination-disabled ant-pagination-prev">&gt; </li>
+			<div class="ant-pagination-options">
+				<div class="ant-pagination-options-quick-jumper">
+					<input id="iSearch" type="number" value=""/>
+					<button id="cSearch" type="button" class="btn btn-blue">跳转</button>
+				</div>
+			</div>
+		</ul> 
+		<!-- <nav aria-label="Page navigation">
+			<ul class="pagination">
+				<li id="contractHome" title="首页">
+					<a href="#" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				<li id = "incrementContract" title="上一页" >
+					<a href="#" class="btn btn-default next">上一页</a>
+				</li>
+				<li title="当前页/总页">
+					<a href="#" id = "pageIndexContract"></a>
+				</li>
+				<li id = "decreasingContract" title="下一页" >
+					<a href="#" class="btn btn-default next">下一页</a>
+				</li>
+				<li id="contractEnd" title="尾页">
+					<a href="#" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+			<div class="ant-pagination-options pagination" style="float:right;">
+				<div class="ant-pagination-options-quick-jumper">
+					<input id="iSearch" type="number" value=""/>
+					<button id="cSearch" type="button" class="btn btn-blue">跳转</button>
+				</div>
+			</div>
+		</nav> -->
+	</div>
+
+	<!--添加印章弹窗-->
+	<div  id="uploadSeal" class="bjui-row col-2 signature-row">
+		<form  id="formSeal" name = "formSeal"  data-toggle="ajaxform" method="POST" enctype="multipart/form-data" >
+			<div class="text-left">
+				<label class="row-label">标题</label>
+				<div class="row-input" style="width: 70%;">
+					<input id="sname" type="text" placeholder="标题" name="title" data-rule="required">
+					<!-- 印章id -->
+					<input id="sid" type="hidden" name="id" >
+					<!-- orgUuid -->
+					<input id="temporgUuid" type="hidden" name="orgUuid"  >
+				</div>
+			</div>
+
+			<div id="PNG_block">
+				<label class="row-label">文件</label>
+				<p class="row-input">
+					<input id="file" type="file" placeholder="名称" name="file" accept=".png, .jpg, .jpeg, .gif">
+					<input id="fileNameSin" type="hidden" placeholder="名称" name="fileName">
+					<input id="nameSin" type="hidden" placeholder="名称" name="name">
+				</p>
+			</div>
+
+			<div>
+				<label class="row-label">说明</label>
+				<p class="row-input" style="width: 70%;">
+					<textarea id="summaryB" name="comment" rows="5" cols="" ></textarea>
+				</p>
+			</div>
+			
+			<div class="text-center" style="margin-top: 15px;">
+				<button id="submitSeal" type="submit" class="btn-default btn" data-icon="save" style="margin-right: 15px;">
+					<i class="fa fa-save"></i> 提交
+				</button>
+				&nbsp;&nbsp;
+				<div id="returnSeal" class="btn-close btn" data-icon="close">
+					<i class="fa fa-close"></i> 返回
+				</div>
+			</div>
+		</form>
+	</div>		    
+	<!-- 印章 -->
+	<div class="seal-wrapper" id="sealBlock">
+		<div class="datagrid-toolbar" style="padding:20px 0px;">
+			<a class="a-return" href="javascript:;" id="sealBack">返回</a>
+			<div class="btn-group" style="width: 300px;left: 50%; margin-left: -200px;">
+				<div class="btn-group" role="group" style="padding:0 20px">
+					<input id="sealTitle" type="text" class="input-signa-heigth" placeholder="按关键字搜索">
+				</div>	
+				<div class="btn-group" role="group">
+					<button id="searchSeal" type="button" class="btn btn-blue but-signa">搜索</button>
+				</div>
+			</div>
+			<div class="btn-group" role="group" style="float:right;">
+				<button type="button" class="btn btn-blue but-signa" id="addSeal">添加印章</button>
+			</div>
+		</div>
+		<div class="heightContract" style="overflow: auto;">
+			<table class="type-setting tab-container" id="tableSeal">
+				<thead>
+					<tr>
+						<th class="angle-left" rowspan="2">序号</th>
+						<th rowspan="2" >标题</th>
+						<th rowspan="2" >名称</th>
+						<th rowspan="2" >浏览</th>
+						<th class="angle-right" rowspan="2">操作</th>
+					</tr>
+				</thead>
+				<tbody id="tbodySeal">
+				</tbody>
+			</table>
+		</div>
+		<!--分页-->
+		<ul class="ant-pagination">
+			<span class="ant-pagination-total-text" id="sealPages"></span>
+			<li id = "incrementSeal" title="上一页" class="ant-pagination-disabled ant-pagination-prev">&lt;  </li>
+			<li id = "pageIndexSeal" class="ant-pagination-item-active ant-pagination-item ant-pagination-item-1">1</li>
+			<li id = "decreasingSeal" title="下一页" class="ant-pagination-disabled ant-pagination-prev">&gt; </li>
+			<div class="ant-pagination-options">
+				<div class="ant-pagination-options-quick-jumper">
+					<input id="iSignature" type="number" value=""/>
+					<button id="cSignature" type="button" class="btn btn-blue">跳转</button>
+				</div>
+			</div>
+		</ul> 
+
+		<!-- <nav aria-label="Page navigation">
+			<ul class="pagination">
+				<li id="signatureHome" title="首页">
+					<a href="#" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				<li id = "incrementSeal" title="上一页" >
+					<a href="#" class="btn btn-default next">上一页</a>
+				</li>
+				<li title="当前页/总页">
+					<a href="#" id = "pageIndexSeal"></a>
+				</li>
+				<li id = "decreasingSeal" title="下一页" >
+					<a href="#" class="btn btn-default next">下一页</a>
+				</li>
+				<li id="signatureEnd" title="尾页">
+					<a href="#" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+			<div class="ant-pagination-options pagination" style="float:right;">
+				<div class="ant-pagination-options-quick-jumper">
+					<input id="iSignature" type="number" value=""/>
+					<button id="cSignature" type="button" class="btn btn-blue">跳转</button>
+				</div>
+			</div>
+		</nav> -->
+	</div>
+
+	<!-- 签章动作 -->
+	<div id="stampBlock" style="margin: 0 -20px; background-color: #fff;">
+		<!-- 合同 -->
+		<div class="contractStructure" id="contract-height">
+			<!-- 合同PDF -->
+			<div class="SigContract" id="contractSrc" style="overflow-y:auto; border-bottom: 1px solid #e9e9e9;" ></div>
+			<!-- 操作 -->
+			<div style="padding: 2px 40px 2px 40px;height:170px;overflow-y: auto;" >
+				<div style="text-align: left;margin-bottom:6px;">
+					<span style="font-size: 14px;font-weight:bold;">签署者信息</span> 
+					<a href="javascript:;" style="float: right;" onclick="doGetTreeData();">
+						<i class="fa fa-plus"></i>
+					</a>
+				</div>
+				<table class="signatory-setting tab-container" id="tableSeal">
+					<thead>
+						<tr>
+							<th class="angle-left" rowspan="2" style="width: 10%;">序号</th>
+							<th rowspan="2" style="width: 40%;">名称</th>
+							<th rowspan="2" style="width: 30%;">状态</th>
+							<th class="angle-right" rowspan="2" style="width: 10%;">操作</th>
+						</tr>
+					</thead>
+					<tbody id="tbodySigner">
+					</tbody>
+				</table>
+				<div style="padding-top: 10px;width: 250px;margin: auto;">
+					<div class="btn-group" role="group" style="margin-right:10px">
+						<button style=" height: 24px;font-size:12px;" type="button" class="btn btn-blue but-signa" onclick="electronicSignature.downloadContract(this)">下载合同</button>
+					</div>
+					<div class="btn-group" role="group" style="margin-right:10px">
+						<button style=" height: 24px; font-size:12px;" type="button" class="btn btn-blue but-signa" id="stampReturn">返回</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 印章列表 -->
+		<div class="sealStructure" style="position:relative;">
+			<h4 id="pCompany" style="text-align: center;" ></h4>
+			<div id="sealListBlock" style="text-align:center;border-top: 1px solid #e9e9e9;"></div>
+		</div>
+	</div>
+
+	<!--添加签署者法人架构公司列表-->
+	<div id="signerList" style="display:none; padding: 20px;">
+		<div class="addsigner-title">添加签署者</div>
+		<ul id="SignerListDemo" class="ztree" style="padding: 0px 5px 5px 5px;height: 600px;overflow: auto;"></ul>
+	</div>
+
+	<!-- CA证书结构块 -->
+	<div id="certificateCABlock" style="display:none;">
+		<div style="width: 50px;padding-left: 20px; padding-top: 20px;" id="CAsealBack"><a href="javascript:;">返回</a></div>
+		<!--<p style="text-align: center; margin-top: 120px;"><b>CA证书状态</b></p>
+		<p id="certificateCAInfo" style="text-align: center; margin-top: -10px;color: #2db7f5;"></p>-->
+		<!-- <div style="width:70px; margin:0 auto;">
+			<button type="button" class="btn btn-blue but-signa" id="applicationCA">申请证书</button>
+		</div> -->
+		<div class="heightContract" style="overflow: auto;padding: 0px 20px;">
+			<table class="type-setting tab-container">
+				<thead class="table-signa">
+					<tr>
+						<th class="angle-left" rowspan="2">CA证书类型</th>
+						<th rowspan="2" >证书状态</th>
+						<th class="angle-right" rowspan="2" >操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>上上签</td>
+						<td id="ShangShangQianCAInfo">暂无证书</td>
+						<td><a href="javascript:;" id="ShangShangQianBut">申请证书</a></td>
+					</tr>
+					<tr>
+						<td>中税</td>
+						<td id="ZhongShuiCAInfo">暂无证书</td>
+						<td><a href="javascript:;" id="ZhongShuiBut">申请证书</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!-- 管理员 -->
+<div id="managementBlock" style="margin-left:244px;">
+	<!--列表-->
+	<div id="showList" style="display: block; padding:20px 20px 30px;">
+		<div class="btn-group" role="group" style="margin-bottom: 20px;">
+			<button id="addshowListbut" type="button" class="btn btn-blue" style="height: 34px; padding: 2px 15px 3px;">添加</button>
+		</div>
+		<div class="heightContract" style="overflow: auto;">
+			<table class="type-setting tab-container" id="tableSeal">
+				<thead>
+					<tr>
+						<th class="angle-left" rowspan="2">序号</th>
+						<th rowspan="2" >账号(OA)</th>
+						<th rowspan="2" >姓名</th>
+						<th rowspan="2" >岗位</th>
+						<th rowspan="2" >子级权限</th>
+						<th class="angle-right" rowspan="2">模板</th>
+					</tr>
+				</thead>
+				<tbody id="tbodyAdmin">
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!--添加-->
+	<div id="addshowList" style="display: none;">
+		<div id="organization">
+			<ul id="organizationTreeDemo" class="ztree" style=" overflow: auto;"></ul>
+		</div>
+		<div id="organizationList" style="height: 700px;overflow: auto;">
+			<div class="btn-group" role="group" style=" padding:10px 0 10px 20px;">
+				<button id="adminAddResult" type="button" class="btn btn-blue but-signa">确定</button>
+			</div>
+			<div class="btn-group" role="group" style="padding:0 20px;">
+				<input id="managementSealText" type="text" class="input-signa-heigth" placeholder="按关键字搜索" style="width: 210px !important;">
+				<button type="button" class="btn btn-blue but-signa" style="margin-left: 10px;float: right;" onclick="authorityManagement.domanagementSeal();">搜索</button>
+			</div>
+			<div class="btn-group" role="group" style=" margin-top: 10px; margin-right: 20px; float: right;">
+				<button id="adminReturn" type="button" class="btn btn-blue but-signa">返回</button>
+			</div>
+			<table class="type-setting tab-container" style="padding: 0px 20px 20px;">
+				<thead >
+					<tr>
+						<th class="angle-left" rowspan="2">序号</th>
+						<th rowspan="2" ><input type='checkbox' name='checkbox' id='allChecked' vaule='全选' onclick="DoCheck()"></th>
+						<th rowspan="2" >账号(OA)</th>
+						<th rowspan="2" >姓名</th>
+						<th class="angle-right" rowspan="2" >工作类型</th>
+					</tr>
+				</thead>
+				<tbody id="organizationDataDisplay">
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+ 
+<!--证照系统-->
+	<script type="text/javascript">
+		
+	    var addlegalUpsObj = $("#legal_ups"); //获取添加工商信息填写弹窗对象
+	    var corpoInformObj = $("#CorpoInform"); //工商信息展示 
+	    var sharInforObj = $("#sharInfor"); //股东信息弹窗对象
+	    var timeReminderObj = $("#timeReminder"); //时间提醒弹窗对象
+	    var businesScancel = $("#businesScancel"); //获取取消按钮
+		var manageZtreelicenObj = $("#manageZtreelicen"); //所属管理组织架构树形列表
+		var picturebackfill = []; //存储图片的空数组；
+		var legalPersonId = null //法人id
+	    var backfillProvince = null; //接收回填的省名称
+	    var backfillCity = null; //接收回填的市名称
+		var backfillRegion = null; //接收回填的县区名称
+		var reqType = 1; // 定义省市区默认省数据
+		var inputFileData = 1;
+		var orgTypeData; 
+		var BusinessFormOrBusinessDetails = false; 	//定义变量判断工商信息展示位置
+		var FileFromLicPath = false; //判断图片显示 or 回填
+	    var licenseManagement = new LicenseManagement(); //证照操作类
+	    
+		
+		//股东信息块  高度赋值
+		var sharInforHeigth = $(window).height() - 69;
+  		$("#sharInfor").css("height",sharInforHeigth+"px");
+	  	
+	  	var heightContract= $(window).height() - 250;
+  		$(".heightContract").css("height",heightContract+"px");
+	  	
+	  	//管理组织架构请求
+	  	$('#organi-stru').hover(function(){
+			//鼠标放上去生成  manageZtreeDiv 块
+			var manageNamewidth = $("#manageName").width();
+	    	$("#manageZtreeDiv").width(manageNamewidth + 13);
+	    	$("#manageZtreeDiv").show();
+	    	ztreeList.ztreelistnode(manageZtreelicenObj,2);
+		},function(){
+			//鼠标移开时隐藏
+			$("#manageZtreeDiv").hide();
+		});
+		
+		//法人架构树形列表
+		$(document).ready(function(){
+			licenseManagement.gettreeRequest();
+		});
+		
+		//工商信息取消 事件
+		businesScancel.click(function () {
+			if(isNull($("#id").val())){
+				electronicSignature.operationRequest(null,addlegalUpsObj,null);
+			} else {
+				electronicSignature.operationRequest(corpoInformObj,addlegalUpsObj,null);
+			}
+			
+		});
+		
+	</script>
+
+<!-- 操作电子签章 -->
+	<script>
+		var licenseORsignature = 0 ; //证照或签章 true表示电子签章显示 fasle表示证照显示 0默认 1证照 2电子签章 3管理员
+		var publicorgUuid = null ; //公共的orgUuid 用于整个页面 公司ID
+		var publiccuuid = null ; //公共的cuuid 用于整个页面 合同ID
+		var publictempPage = null ; //全局 实际操作的页码数据
+		var publicsignX = null ; //全局X
+		var publicsignY = null ; //全局Y
+		var publiciWidth = null ; //全局width
+		var publiciHeigth = null ; //全度height
+		var publicContrackPages = 0 ; //合同的页码数量
+		var publicCompany = null ; //公司名
+		var electronicSignature = new ElectronicSignature(); //电子签章操作类实例
+		var licenseObj = $('#licenseBlock'); //证照对象
+		var signatureObj = $('#signatureBlock');//电子签章对象
+		var managementObj = $("#managementBlock");//管理员对象
+		var contractObj = $("#contractBlock");//合同对象
+		var sealObj = $("#sealBlock");//印章对象
+		var uploadContractObj = $('#uploadContract');//合同弹窗对象
+		var uploadSealObj = $("#uploadSeal");//印章弹窗对象
+		var stampObj = $("#stampBlock");//盖章对象 签章对象
+		var certificateCABlockObj = $("#certificateCABlock");//CA 认证状态块对象
+		var contractSrcObj = $("#contractSrc");//合同对象 图片路径 iframe对象
+		var sealListBlockObj = $("#sealListBlock");//印章列表块
+		var tbodySignerObj = $("#tbodySigner");//签署者信息显示对象
+		var SignerListDemoObj = $("#SignerListDemo"); //添加签署者树形对象
+		var ShangShangQianCAInfoObj = $("#ShangShangQianCAInfo");//CA证书部分 提示文字
+		var ZhongShuiCAInfoObj = $("#ZhongShuiCAInfo");//中税CA证书部分 提示文字
+		var signerListObj = $("#signerList");//添加签署者结构块
+		var tempTaskId = null;
+		var isrepeatSubmit = null;//防止重复提交设置印章
+		var isrepeatSubmitSignatrue = null;//防止重复提交签署
+		var tempPower = 0 ; //权限 证照签章或管理员
+		var signatory = false;//添加签署者回包判断
+		var allPageCon = 0; //总共多少页面合同	
+		var allPageSin = 0; //总共多少页面印章	
+		var tempPage = 1; //当前页数，默认为1
+		var publicPageCon = 1;//当前合同
+		var publicPageSin = 1;//印章当前页数
+		var statusContract = -1 ;//合同检索状态
+
+		//细节优化
+		$(".set_tab > li").click(function(){
+			$(".set_tab > li").eq($(this).index()).addClass("busi-info-active").siblings().removeClass("busi-info-active");
+		});
+		$("#license").hide();
+		$("#signature").hide();
+		$("#management").hide();
+		//电子签章结构块
+		var signature = $('#signature');//电子签章按钮
+		signature.click(function(){	
+			if(tempPower==2||tempPower==3){
+				licenseORsignature = 2;
+				//证照隐藏 签章显示
+				electronicSignature.operationRequest(signatureObj,licenseObj,managementObj);
+				//印章隐藏 合同显示
+				electronicSignature.operationRequest(contractObj,sealObj,null);
+				//印章弹窗 或 合同弹窗隐藏
+				electronicSignature.operationRequest(null,uploadContractObj,uploadSealObj);
+				//合同签署隐藏
+				electronicSignature.operationRequest(null,stampObj,null);
+				//执行请求方法 合同数据
+				electronicSignature.operationRequest(null,signerListObj,certificateCABlockObj);
+				if(!isNull(publicorgUuid)){
+					interfaceServer.dogetContractList(publicorgUuid,1);
+				}
+                tempPage = 1;
+			} else {
+				BJUI.alertmsg('info','无权限访问签章部分');
+			};
+		});
+
+		//管理印章 按钮
+		var managementSealObj = $('#managementSeal');//管理印章
+		managementSealObj.click(function(){
+			try {
+				electronicSignature.operationRequest(sealObj,contractObj,null);	
+				if(!isNull(publicorgUuid)){
+					//执行请求方法 印章数据
+					interfaceServer.dogetSignatureList(publicorgUuid,publicPageSin);
+				} else {
+					BJUI.alertmsg('info', '请选择左侧选择法人架构公司名');
+				}
+				//印章页数返回默认第一页
+				$("#pageIndexSeal").html(1);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+	
+		//签章提交 按钮
+		var submitSealObj = $("#submitSeal");//签章提交按妞
+		submitSealObj.click(function(){
+			try {
+				var formSealObj = $('#formSeal');//表单对象
+				$("#temporgUuid").val(publicorgUuid);
+				if(isNull($("#sname").val())){
+					BJUI.alertmsg('warn', '标题不能为空');
+					return;
+				}
+				if(isNull($("#sid").val())){
+					if(isNull($("#file").val())){	
+						BJUI.alertmsg('warn', '文件上传不能为空');
+						return;
+					};
+					var file = $("#file").val();
+					var AllImgExt=".jpg|.jpeg|.gif|.png|";  
+					var extName = file.substring(file.lastIndexOf(".")).toLowerCase();//（把路径中的所有字母全部转换为小写）          
+					if(AllImgExt.indexOf(extName+"|")==-1){  
+						ErrMsg="该文件类型不允许上传。请上传 "+AllImgExt+" 类型的文件，当前文件类型为"+extName;  
+						BJUI.alertmsg('warn', ErrMsg);
+						return false;  
+					} 
+				}
+				interfaceServer.dosaveSignature(formSealObj);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+		
+		//合同提交 按妞
+		var submitContractObj = $("#submitContract");//合同提交按妞
+		submitContractObj.click(function(){
+			if(isNull($("#cname").val())){
+				BJUI.alertmsg('warn', '标题不能为空');
+				return;
+			};
+			var d1 = new Date($("#deadline").val());
+			if (d1 < new Date) {
+				BJUI.alertmsg('warn', '合同有效期需大于系统时间');
+				return;
+			} 
+			if(isNull($("#deadline").val())){
+				BJUI.alertmsg('warn', '合同有效期填写错误');
+				return;
+			};
+			//判断合同ID 若是修改则判断文件是否为空与符合要求
+			if(isNull($("#cuuidA").val())){
+				if(isNull($("#fileContract").val())){	
+					BJUI.alertmsg('warn', '文件上传不能为空');
+					return;
+				};
+				var file = $("#fileContract").val();
+				var AllImgExt=".pdf|";  
+				var extName = file.substring(file.lastIndexOf(".")).toLowerCase();//（把路径中的所有字母全部转换为小写）          
+				if(AllImgExt.indexOf(extName+"|")==-1){  
+					ErrMsg = "该文件类型不允许上传。请上传 "+AllImgExt+" 类型的文件，当前文件类型为"+extName;  
+					BJUI.alertmsg("warn",ErrMsg);  
+					return;  
+				}  
+			} 
+			var orgUuidAObj = $("#orgUuidA");
+			orgUuidAObj.val(publicorgUuid);
+			//合同提交表单			
+			var formContractObj = $('#formContract');
+			interfaceServer.dosaveContract(formContractObj);
+		});
+
+		//弹出上传印章
+		var addSealObj = $("#addSeal");//印章添加按钮
+		addSealObj.click(function(){
+			try {
+				$("#formSeal")[0].reset(); 
+				$("#sid").val("");
+				$("#PNG_block").show();
+				$("#fileNameSin").val("");
+				$("#nameSin").val("");
+				electronicSignature.operationUpload(uploadSealObj,sealObj);
+			} catch (error) {
+				console.log(error);
+			}
+		});		
+
+		// 合同添加 按妞
+		var addContractObj = $("#addContract");//合同添加按钮
+		addContractObj.click(function(){
+			try {
+				$("#formContract")[0].reset(); 
+				$("#cuuidA").val("");
+				$("#PDF_block").show();
+				$("#fileNameCon").val('');
+        		$("#nameCon").val('');
+				electronicSignature.operationUpload(uploadContractObj,contractObj);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		// 证照结构块 按妞
+		var license = $('#license');//证照按钮
+		license.click(function(){
+			try {
+				if( tempPower==1||tempPower==3 ){
+					licenseORsignature = 1;
+					electronicSignature.operationRequest(licenseObj,signatureObj,managementObj);
+					timeReminderObj.hide();
+					$("#oaListTime").val("");
+					if(!isNull(publicorgUuid)){
+						interfaceServer.findTreeNodeInformation(publicorgUuid);
+						$("#id").val(""); 	//创建新工商信息的时候清除多余的工商信息id
+						$("#legalPersonId").val("");//创建新工商信息的时候清除多余的法人id
+						$("#picturebackfill").val(""); //图片回填数据清除
+						$("#dd > div").remove(); 
+						document.getElementById("myform").reset();
+						backfillProvince = null;
+						backfillCity = null;
+						backfillRegion = null;
+						recipientsList = [];
+						$("#emlieTempInfo").html("");
+					}
+				} else {
+					BJUI.alertmsg('info','无权限访问证照部分');
+				};
+			} catch (error) {
+				console.log("证照按钮异常"+error);
+			}	
+		});
+
+		// 管理员结构块 按妞 
+		var management = $('#management');//管理员按钮
+		management.click(function(){
+			try{
+				var temporaryStorage = getStorage(SERVICE_NAME_DATA_TEMP);
+				temporaryStorage = JSON.parse(temporaryStorage);
+				var tempSuper = temporaryStorage.super;//权限判定
+				if(tempSuper==true||tempSuper=='true'){
+					licenseORsignature = 3;
+					electronicSignature.operationRequest(managementObj,licenseObj,signatureObj);
+					if(!isNull(publicorgUuid)){
+						authorityManagement.getUsersInfo(publicorgUuid);
+					}
+				} else {
+					BJUI.alertmsg('info','无权限访问管理员部分');
+				};
+			} catch (error) {
+				console.log("管理员按钮异常"+error);
+			}
+		});
+
+
+		//印章返回 按钮
+		var sealBackObj = $("#sealBack");
+		sealBackObj.click(function(){
+			electronicSignature.operationRequest(contractObj,sealObj,null);
+		});
+
+		//合同取消 返回 按钮
+		var returnContractObj = $("#returnContract");
+		returnContractObj.click(function () {
+			electronicSignature.operationRequest(contractObj,uploadContractObj,null);
+		});
+
+		//印章取消 返回 按钮
+		var returnSealObj = $("#returnSeal");
+		returnSealObj.click(function () {
+			electronicSignature.operationRequest(sealObj,uploadSealObj,null);
+		});
+
+		// ca证书点击
+		var certificateCAObj = $("#certificateCA");//ca证书按钮
+		certificateCAObj.click(function(){
+			if(publicorgUuid!==null&&publicorgUuid!==undefined){
+				interfaceServer.doapplyCert(publicorgUuid);
+			} else {
+				BJUI.alertmsg('info', '请选择左侧选择法人架构公司名');
+			}	
+		});
+		
+		// 上上签ca认证 申请
+		var ShangShangQianButObj = $("#ShangShangQianBut");
+		ShangShangQianButObj.click(function(){
+			interfaceServer.doapplyCert(publicorgUuid);
+		})
+		
+		// 中税ca认证 申请
+		var ZhongShuiButObj = $("#ZhongShuiBut");
+		ZhongShuiButObj.click(function(){
+			interfaceServer.doZhongShuiCert(publicorgUuid);
+		})
+
+		// 签章操作 返回按钮
+		var stampReturnObj = $("#stampReturn");
+		stampReturnObj.click(function(){
+			electronicSignature.operationRequest(signatureObj,stampObj,null);
+			electronicSignature.operationRequest(contractObj,null,null);
+			interfaceServer.dogetContractList(publicorgUuid,publicPageCon);
+		});
+		
+		//CA证书返回按钮
+		var CAsealBackObj = $("#CAsealBack");
+		CAsealBackObj.click(function(){
+			certificateCABlockObj.hide();
+			contractObj.show();
+		});
+
+		// CA证书申请
+		// var applicationCAObj = $("#applicationCA");
+		// applicationCAObj.click(function(){
+		// 	try {
+		// 		interfaceServer.docertStatus(publicorgUuid,tempTaskId);	
+		// 	} catch (error) {
+		// 		console.log(error);	
+		// 	}
+		// });
+
+		// 搜索合同
+		var searchConObj = $("#searchCon");
+		searchConObj.click(function(){
+			try {
+				var tempVal = $("#searchConSkey").val();//合同搜索关键字
+				if(!isNull(tempVal)){
+					electronicSignature.searchCon(publicorgUuid,tempVal,publicPageCon);
+				} 
+			} catch (error) {
+				console.log(error);
+			}
+		});
+		
+		//合同首页
+		// var contractHomeObj = $("#contractHome");
+		// contractHomeObj.click(function(){
+		// 	publicPageCon = 1;
+		// 	$("#pageIndexContract").html(publicPageCon + '/' + allPageCon);//设置页面
+		// 	var tempVal = $("#searchConSkey").val();//合同搜索关键字
+		// 	if(isNull(tempVal)){
+		// 		//状态 页码
+		// 		interfaceServer.doContractSearchState(publicorgUuid,statusContract,publicPageCon);	
+		// 	} else {
+		// 		//关键字 页码
+		// 		electronicSignature.searchCon(publicorgUuid,tempVal,publicPageCon);
+		// 	}
+		// });
+
+		// //合同尾页
+		// var contractEndObj = $("#contractEnd");
+		// contractEndObj.click(function(){
+		// 	publicPageCon = allPageCon;
+		// 	$("#pageIndexContract").html(publicPageCon + '/' + allPageCon);//设置页面
+		// 	var tempVal = $("#searchConSkey").val();//合同搜索关键字
+		// 	if(isNull(tempVal)){
+		// 		//状态 页码
+		// 		interfaceServer.doContractSearchState(publicorgUuid,statusContract,publicPageCon);	
+		// 	} else {
+		// 		//关键字 页码
+		// 		electronicSignature.searchCon(publicorgUuid,tempVal,publicPageCon);
+		// 	}
+		// });
+		
+		// 分页递减合同 合同上一页
+		var incrementContractObj = $("#incrementContract");
+		incrementContractObj.click(function(){
+			var tempD = parseInt(publicPageCon)-1;
+			if(tempD<=0){
+				return;
+			}
+			publicPageCon = parseInt(publicPageCon)-1;
+			$("#pageIndexContract").html(publicPageCon + '/' + allPageCon);//设置页面
+			var tempVal = $("#searchConSkey").val();//合同搜索关键字
+			if(isNull(tempVal)){
+				//状态 页码
+				interfaceServer.doContractSearchState(publicorgUuid,statusContract,publicPageCon);	
+			} else {
+				//关键字 页码
+				electronicSignature.searchCon(publicorgUuid,tempVal,publicPageCon);
+			}
+		});
+
+		// 分页递增合同 合同下一页
+		var decreasingContractObj = $("#decreasingContract");
+		decreasingContractObj.click(function(){
+			var tempD = parseInt(publicPageCon)+1;
+			if(tempD>allPageCon){
+				return;
+			}
+			publicPageCon = parseInt(publicPageCon)+1;//设置全局当前页码数
+			$("#pageIndexContract").html(publicPageCon + '/' + allPageCon);
+			var tempVal = $("#searchConSkey").val();//合同关键字
+			if(isNull(tempVal)){
+				//状态 页码
+				interfaceServer.doContractSearchState(publicorgUuid,statusContract,publicPageCon);	
+			} else {
+				// 关键字 页码
+				electronicSignature.searchCon(publicorgUuid,tempVal,publicPageCon);
+			}
+		});
+
+		// 合同跳转
+		var cSearchObj = $("#cSearch");
+		cSearchObj.click(function(){
+			var isearch = $("#iSearch").val();//跳转页码
+			if(isearch>allPageCon||isNull(isearch)){
+				return;
+			}
+			var tempVal = $("#searchConSkey").val();//合同关键字
+			publicPageCon = isearch;
+			if(isNull(tempVal)){
+				interfaceServer.doContractSearchState(publicorgUuid,statusContract,isearch);	
+			} else {
+				electronicSignature.searchCon(publicorgUuid,tempVal,isearch);
+			}
+		});
+
+		//首页 印章
+		// var signatureHomeObj = $("#signatureHome");
+		// signatureHomeObj.click(function(){
+		// 	publicPageSin = 1;
+		// 	$("#pageIndexSeal").html(publicPageSin+"/"+allPageSin);
+		// 	var tempVal = $("#sealTitle").val();
+		// 	if(isNull(tempVal)){
+		// 		interfaceServer.dogetSignatureList(publicorgUuid,tempPage);
+		// 	} else {
+		// 		electronicSignature.doSignatureSearch(publicorgUuid,tempVal,tempPage);
+		// 	}
+		// });
+		// //尾页 印章
+		// var signatureEndObj = $("#signatureEnd");
+		// signatureEndObj.click(function(){
+		// 	publicPageSin = allPageSin;
+		// 	$("#pageIndexSeal").html(publicPageSin+"/"+allPageSin);
+		// 	var tempVal = $("#sealTitle").val();
+		// 	if(isNull(tempVal)){
+		// 		interfaceServer.dogetSignatureList(publicorgUuid,tempPage);
+		// 	} else {
+		// 		electronicSignature.doSignatureSearch(publicorgUuid,tempVal,tempPage);
+		// 	}
+		// });
+		
+		// 分页递减印章
+		var incrementSealObj = $("#incrementSeal");
+		incrementSealObj.click(function(){
+			var tempPage =  parseInt(publicPageSin)-1;
+			if(tempPage<=0){
+				BJUI.alertmsg('warn','没有上一页了');
+				return;
+			}
+			publicPageSin = parseInt(publicPageSin)-1
+			$("#pageIndexSeal").html(publicPageSin+"/"+allPageSin);
+			var tempVal = $("#sealTitle").val();
+			if(isNull(tempVal)){
+				interfaceServer.dogetSignatureList(publicorgUuid,tempPage);
+			} else {
+				electronicSignature.doSignatureSearch(publicorgUuid,tempVal,tempPage);
+			}
+		});
+
+		// 分页递增印章
+		var decreasingSealObj = $("#decreasingSeal");
+		decreasingSealObj.click(function(){
+			var tempPage = parseInt(publicPageSin)+1;
+			if(tempPage>allPageSin){
+				BJUI.alertmsg('warn','总共'+allPageSin+'页数据');
+				return;
+			}
+			publicPageSin = parseInt(publicPageSin)+1;
+			$("#pageIndexSeal").html(publicPageSin+"/"+allPageSin);
+			var tempVal = $("#sealTitle").val();
+			if(isNull(tempVal)){
+				interfaceServer.dogetSignatureList(publicorgUuid,tempPage);
+			} else {
+				electronicSignature.doSignatureSearch(publicorgUuid,tempVal,tempPage);
+			}
+		});
+
+		// 印章跳转
+		var cSignatureObj = $("#cSignature");
+		cSignatureObj.click(function(){
+			var isearch = $("#iSignature").val();//跳转的页码
+			if(isearch>allPageSin||isNull(isearch)){
+				return;
+			}
+			var tempVal = $("#sealTitle").val();//印章关键字
+			publicPageSin = isearch;
+			if(isNull(tempVal)){
+				interfaceServer.dogetSignatureList(publicorgUuid,isearch);	
+			} else {
+				electronicSignature.doSignatureSearch(publicorgUuid,tempVal,isearch);
+			}
+		});
+
+		// 印章搜索
+		var searchSealObj = $("#searchSeal");
+		searchSealObj.click(function(){
+			try {
+				var sealTitleVal = $("#sealTitle").val();//印章关键字
+				if(isNull($("#iSignature").val())){
+					electronicSignature.doSignatureSearch(publicorgUuid,sealTitleVal,publicPageSin);
+				} else {
+					publicPageSin = $("#iSignature").val();
+					electronicSignature.doSignatureSearch(publicorgUuid,sealTitleVal,$("#iSignature").val());
+				}
+			} catch (error){
+				console.log(error);
+			}
+		});
+	</script>
+		
+<!--权限管理-->
+	<script>		
+		var adminorgUuid = null;   //管理员组织架构orgUuid
+		var showList = $("#showList"); //管理员列表对象
+		var addshowList = $("#addshowList"); //管理员添加对象
+		var organizationTreeDemoObj = $("#organizationTreeDemo"); //
+		var OrgStructureHeight = document.body.clientHeight - 66;
+		$("#organizationTreeDemo").height(OrgStructureHeight);
+
+		//添加员工列表 添加按钮
+		var addshowListbut = $("#addshowListbut");//获取添加展示列表按钮
+		addshowListbut.click(function(){
+			ztreeList.ztreelistnode(organizationTreeDemoObj,4);
+			$("#showList").hide();
+			$("#addshowList").show();
+		});
+
+		//临时存储字段
+		function tempObjData(tempAccountUuid,tempCorpId,tempUserName,tempName,tempMobile,tempEmail,tempSex,tempJobType,tempJobUuid){
+				this.accountUuid = tempAccountUuid;
+				this.corpId = tempCorpId;		
+				this.userName = tempUserName;
+				this.name = tempName;
+				this.mobile = tempMobile;
+				this.email = tempEmail;
+				this.sex = tempSex;
+				this.jobType = tempJobType;
+				this.jobUuid = tempJobUuid;
+		};
+
+		// oa权限确认操作 按钮
+		var adminAddResultObj = $("#adminAddResult");//添加 确定按钮
+		adminAddResultObj.click(function(){
+			try {
+				var tempUserEntity = [];
+				$("input:checkbox[name='UserEntity']:checked").each(function(){
+					tempUserEntity.push(new tempObjData(
+						$(this).parent().parent().parent().children("td").eq(5).text(),
+						$(this).parent().parent().parent().children("td").eq(6).text(),
+						$(this).parent().parent().parent().children("td").eq(2).text(),
+						$(this).parent().parent().parent().children("td").eq(3).text(),
+						$(this).parent().parent().parent().children("td").eq(7).text(),
+						$(this).parent().parent().parent().children("td").eq(8).text(),
+						$(this).parent().parent().parent().children("td").eq(9).text(),
+						$(this).parent().parent().parent().children("td").eq(4).text(),
+						$(this).parent().parent().parent().children("td").eq(10).text()
+					));
+				}); 
+				tempUserEntity = JSON.stringify(tempUserEntity);
+				tempUserEntity = tempUserEntity.replace(/\[/g, BRACKETS_LEFT);
+				tempUserEntity = tempUserEntity.replace(/\]/g, BRACKETS_RIGHT);
+				tempUserEntity = tempUserEntity.replace(/\{/g, BIG_PARANTHESES_LEFT);
+				tempUserEntity = tempUserEntity.replace(/\}/g, BIG_PARANTHESES_RIGHT);
+				authorityManagement.addUserInfo(publicorgUuid,tempUserEntity);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
+		// 全选
+		function DoCheck(){
+		    var ch = document.getElementsByName("UserEntity");
+		    if(document.getElementById("allChecked").checked==true){
+		        for(var i=0;i<ch.length;i++) {
+		            ch[i].checked=true;
+		        }
+		    } else {
+		        for(var i=0;i<ch.length;i++) {
+		            ch[i].checked=false;
+		        }
+		    }
+		}
+		
+		//添加员工取消 事件
+		var adminReturn = $("#adminReturn");
+		adminReturn.click(function () {
+			electronicSignature.operationRequest(showList,addshowList,null);
+		});
+	</script>
+	<!--时间提醒-->
+	<script>
+		var reminderTime = new ReminderTime();
+		
+		//时间提醒取消事件 关闭
+		var timeReminderScancelObj = $("#timeReminderScancel"); //时间提醒取消按钮
+		timeReminderScancelObj.click(function (){
+			$("#emlieTempInfo").html("");//表现置空
+			$("#oaListTime").val("");//实际值置空
+			electronicSignature.operationRequest(null,timeReminderObj,null);
+			interfaceServer.findTreeNodeInformation(publicorgUuid);
+		});
+		//显示时间提醒弹窗
+		var remindTimeObj = $("#remindTime");
+		remindTimeObj.click(function(){
+			$("#CorpoInform").hide();
+			$("#timeReminder").show();
+		});
+
+		//模糊查询员工信息 
+		var timeSearchObj = $("#timeSearch");
+		timeSearchObj.bind("input",function(){
+			reminderTime.doselectEmployee(timeSearchObj.val());
+		});
+
+		//设置时间提醒
+		var timeReminderBtnObj = $("#timeReminderBtn");
+		timeReminderBtnObj.click(function(){
+			if(isNull($("#oaListTime").val())){
+				return;
+			}
+			if(isNull($("#timeEnd").val())){
+				return;
+			}
+			if(isNull($("#daysTime").val())){
+				return;
+			}
+			if(isNull($("#bodytime").val())){
+				return;
+			}
+			var d1 = new Date($("#timeEnd").val());
+			if (d1 < new Date) {
+				BJUI.alertmsg('warn', '到期需大于系统时间');
+				return;
+			} 
+			if($("#daysTime").val()<0){
+				BJUI.alertmsg('warn', '时间输入不合理');
+				return;
+			}
+			if(isNull($("#lidTime").val())){
+				BJUI.alertmsg('warn', '工商信息错误');
+				return;
+			}
+
+			interfaceServer.dosetTimeReminder($("#timeReminderForm"));
+			
+		});
+		
+		//选中开启时间提醒
+		$("#checkboxTime").click(function(){
+			stateSelected();
+		});
+		
+		//操作选中状态函数
+		function stateSelected(){
+			$("#remindTime").hide();
+			$("#remindTimeInfo").html("开启证照到期提醒");
+			$("input:checkbox[name='checkboxTime']:checked").each(function() {
+				$("#remindTime").show();
+				$("#remindTimeInfo").html("已开启证照到期提醒");
+        	});
+		}
+	</script>
+	

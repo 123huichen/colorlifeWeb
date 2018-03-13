@@ -1,0 +1,415 @@
+<div class="busi-info" style="height: 66px;"> 
+	<div class="busi-info-icon"> </div> 
+	<ul class="busi-info-tab setUpTab" style="padding-left: 60px;">
+		<li id='legalZtree' class="busi-info-item busi-info-active"><span><i class="fa fa-home"></i>法人架构管理</span></a></li>	
+		<li id="SetTheType" class="busi-info-item"><span><i class="fa fa-home"></i>机构类型管理</span></a></li>
+		<li id='logModule' class="busi-info-item"><span><i class="fa fa-home"></i>平台操作日志</span></a></li>	
+	</ul> 
+</div>
+	
+	
+<!--法人架构-->
+<div id="legalZtreeObj" style="display:none;">
+	<div style="border: 20px solid #f7f7f7;">
+		<div style="padding:20px 20px 0px;">	
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-blue" id="addLeaf" style="height: 34px;">添加一级法人</button>
+			</div>
+		</div>
+		<div class="ztreeOrganiHeight" style="overflow: auto;margin: 20px;">
+			<div class="ztree-set-title">
+				<div class="ztree-set-all">
+					<span class=""><b>名称</b></span>
+					<span class="ztree-set-right"><b>操作</b></span>
+					<span class="ztree-set-status"><b>状态</b></span>
+				</div>
+			</div>
+			<ul id="LegalPersonZtree" class="ztree"></ul>
+		</div>
+	</div>
+	<div class="organihide organi-bomb-bag" id="allLegal">
+		<!--添加基本信息DIV-->
+		<div class="bjui-row organi-bomb" id="add">
+			<div class="organi-bomb-title"><b>添加子节点</b></div>
+			<div style="width: 80%; margin: auto;">
+				<form  id="addform" name = "addform"  data-toggle="ajaxform">
+			    	<input type="hidden" id="parentId" name="parentId" value=""/> 
+			    	<input type="hidden" id="familyTypeId" name="familyTypeId" value="2"/>
+			    	<div >
+			    		<label class="row-label" style="width: 60px;">名称：</label>
+						<div class="row-input" style="width: 280px;">
+				            <input type="text" name="name" placeholder="公司名称" id="fName">
+				        </div>
+			    	</div>
+			        <div class="text-center" style="margin-top: 15px;">
+				        <button type="button" class="btn-default btn" data-icon="save" style="margin-right: 15px;" id="add_submit" onclick="legalZtree.doSaveTreeBaseNode();"><i class="fa fa-save"></i> 保存</button> &nbsp;&nbsp; 
+				        <div id="cancelnode" class="btn-close btn" data-icon="close"><i class="fa fa-close"></i> 取 消</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<!--修改法人架构-->
+		<div class="bjui-row organi-bomb" id="legalPersonModify" style="height: 225px;">
+			<div class="organi-bomb-title"><b>资料修改</b></div>
+			<div style="width: 90%; margin: auto;">
+				<form  id="legalPersonModifyForm"  data-toggle="ajaxform">
+			    	<input type="hidden" id="orgUuidModify" name="orgUuid" value=""/> 
+			    	<input type="hidden" name="parentId" id="hiddenParentId" value=""/>
+		    		<label class="row-label" style="width: 100px;">公司名称：</label>
+			        <div class="row-input" style="width: 280px;" >
+			            <input type="text" name="name" id="newname" placeholder="公司名称">
+			        </div>
+			        <label class="row-label" style="width: 100px;">父级法人：</label>
+			        <div class="row-input" style="width: 280px;position: relative;" id="modifyDiv">
+			            <input type="text" name="cancelparentId" id="cancelParentId" readonly="readonly" value=""/>
+			            <div class="DropdownMenuBackground" id="DropdownMenuBackground">
+			    			<ul id="dropdownMenu" class="ztree"></ul>
+			    		</div>
+			        </div>
+		    		<a href="javascript:;" id="legalRootNode"><span style="font-size: 12px;margin-left: 100px;">设为一级法人</span></a>
+			        <div class="text-center" style="margin-top: 15px;">
+				        <button type="button" class="btn-default btn" data-icon="save" style="margin-right: 15px;" id="" onclick="legalZtree.doLegalPersonModify();"><i class="fa fa-save"></i> 保存</button> &nbsp;&nbsp; 
+				        <div id="cancelLegal" class="btn-close btn" data-icon="close"><i class="fa fa-close"></i> 取 消</div>
+					</div>
+				</form>
+			</div>	
+		</div>
+	</div>	
+	
+</div>
+    
+    
+<!--机构类型-->
+<div id="organitypedeleteObj" style="display: none;">
+	<div id="set" style="border: 20px solid #f7f7f7;">
+		<div class="">
+	        
+        	<div class="btn-group" role="group" style="padding: 20px 20px 0px;">
+				<button id="addOrganitypeButton" type="button" class="btn btn-blue" style="height: 34px;padding: 2px 15px 3px;;">新增</button>
+			</div>
+            <input name="typeNum" type="hidden" id="typeNum">
+            <div class="ztreeOrganiHeight" id="xs" style=" margin: 20px;overflow: auto;">
+	            <table class="type-setting tab-container">
+					<thead>
+						<tr>
+							<th class="angle-left" rowspan="2" style="width: 33%;  padding-left: 20px;">序号</th>
+							<th rowspan="2" style="width: 33%; padding-left: 20px;">名称</th>
+							<th class="angle-right" rowspan="2" style="width: 33%;    padding-left: 20px;">操作</th>
+						</tr>
+					</thead>
+					<tbody id="tbodysetting"></tbody>
+				</table>
+			</div>	
+			
+			<!--修改机构类型弹窗-->
+			<div class="organihide organi-bomb-bag" id="allBomb">
+				<!--机构类型设置-->
+				<div class="organi-bomb organihide" id="organitypeModify">
+				    <div class="organi-bomb-title"><b>机构类型设置</b></div>
+				    <div class="bjui-row" style="letter-spacing: 0px;">
+				    	<form id="" data-toggle="ajaxform">
+							<div class="" style="width: 80%; margin: auto;">
+								<input type="hidden" id="organitypeuuid" value=""/>
+								<label class="row-label" style="width: 60px;">名称：</label>
+								<div class="row-input" style="width: 280px;">
+									<input type="text" id="organitypeModifyName" name="" placeholder="" >
+								</div>
+								<div class="text-center" style="margin: 20px 0;">
+							        <a href="#" class="btn-default btn"  style="margin-right: 15px;" onclick="organizationType.organitypeModifyName()"><i class="fa fa-save"></i> 保存</a> &nbsp;&nbsp; 
+							        <div id="organitypeModifyCancel" class="btn-close btn" data-icon="close"><i class="fa fa-close"></i> 取消</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--机构类型添加-->
+				<div id="organitypeAdd" class="organihide organi-bomb">
+					<div class="organi-bomb-title"><b>机构类型添加</b></div>
+				    <div class="bjui-row" style="letter-spacing: 0px;">
+				    	<form id="organiAddForm" data-toggle="ajaxform">
+							<div class="" style="width: 80%; margin: auto;">
+								<label class="row-label" style="width: 60px;">名称：</label>
+								<div class="row-input" style="width: 280px;">
+									<input type="text" name="name" placeholder="名称" id="name">
+								</div>
+								<div class="text-center" style="margin: 20px 0;">
+							        <a href="#" class="btn-default btn"  style="margin-right: 15px;" onclick="organizationType.doSetUp();"><i class="fa fa-save"></i> 保存</a> &nbsp;&nbsp; 
+							        <div id="organitypeAddCancel" class="btn-close btn" data-icon="close"><i class="fa fa-close"></i> 取消</div>
+								</div>
+							</div>
+						</form>	
+					</div>
+				</div>
+			</div>
+
+	    </div>
+	</div>
+</div>
+
+
+<!--日志模块-->
+<div id="logModuleObj" style="display:none;">
+	<div id="" style="padding:0 20px 20px 20px; border: 20px solid #f7f7f7;">
+		<div style="padding:20px 0px;">
+			<div class="btn-group" role="group" style="padding:0 20px 0 0">
+				<input id="logSearchName" type="text" class="input-signa-heigth" placeholder="按关键字搜索">
+			</div>	
+			<div class="btn-group" role="group" style="margin-right:10px">
+				<button id="logSearchFor" type="button" class="btn btn-blue but-signa">搜索</button>
+			</div>	
+		</div>
+
+		<div class="logModuleOuter" id="logModuleMainHeight">
+			<table class="type-setting tab-container">
+				<thead>
+					<tr>
+						<th class="angle-left" rowspan="2" style="width: 5%;">序号</th>
+						<th rowspan="2" style="width: 20%;">操作员</th>
+						<th rowspan="2" style="width: 12%;">操作</th>
+						<th rowspan="2" style="width: 20%;">时间</th>
+						<th rowspan="2" style="width: 8%;">状态</th>
+						<th class="angle-right" rowspan="2" style="width: 30%;">信息</th>
+					</tr>
+				</thead>
+				<tbody id="logSearchData">
+				</tbody>
+			</table>
+		</div>
+		<!--分页-->
+		 <ul class="ant-pagination">
+			<li id = "logPreviousPage" title="上一页" class="ant-pagination-disabled ant-pagination-prev">&lt;  </li>
+			<li id = "logPagination" class="ant-pagination-item-active ant-pagination-item ant-pagination-item-1"></li>
+			<li id = "logNextPage" title="下一页" class="ant-pagination-disabled ant-pagination-prev">&gt; </li>
+			<div class="ant-pagination-options">
+				<div class="ant-pagination-options-quick-jumper">
+					<input type="text" id="logModuleValue" value=""/>
+					<button id="logModuleJump" type="button" class="btn btn-blue">跳转</button>
+				</div>
+			</div>
+		</ul> 
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+	
+	var legalZtreeObj = $("#legalZtreeObj"); //获取法人架构模块
+	var organitypedeleteObj = $("#organitypedeleteObj"); //获取机构类型模块
+	var logModuleObj = $("#logModuleObj"); //获取日志模块
+	var dropdownMenuObj = $("#dropdownMenu"); //获取修改 法人架构列表
+	var organitypeModifyObj = $("#organitypeModify"); //机构类型修改 确认 取消按钮对象
+	var organitypeAddObj =$("#organitypeAdd"); //机构类型 新增表单 对象
+	var allLegalObj = $("#allLegal"); //法人设置弹窗背景
+	var allBombObj = $("#allBomb"); //机构设置弹框背景
+	var cancelnode = $("#cancelnode");  //添加节点取消按钮
+	var cancelLegal = $("#cancelLegal");  //修改法人 取消按钮
+	var addsave = $("#add"); //获取添加节点表单
+	var legalPersonModify = $("#legalPersonModify") //获取修改法人表单
+	var statusMark = 0; //法人刷新标识 0为法人编辑 刷新法人列表  1为启用禁用 不刷新法人列表
+	var subsetLiData = 0; //法人架构添加子集
+	var treeztreeNode; // 法人架构节点对象
+	var totalPage = 1; //平台操作日志总页码
+	var start = 1; //平台操作日志页码  默认为1
+	var SignerListDemoObj; //
+	var electronicSignature = new ElectronicSignature();
+	
+	
+	
+	
+	var temporaryStorageset = getStorage(SERVICE_NAME_DATA_TEMP);// 接收登录返回的法人架构和权限数据
+	if(!isNull(temporaryStorageset)){
+		temporaryStorageset = JSON.parse(temporaryStorageset);
+		tempSuper = temporaryStorageset.super;
+		if(tempSuper !== "true"){
+			$("#legalZtree").hide();
+		}else {
+			$("#legalZtree").show();
+			$("#legalZtreeObj").show();
+		}
+	}
+	
+	//jquery tab选项卡
+	$(".setUpTab > li").click(function(){
+		$(".setUpTab > li").eq($(this).index()).addClass("busi-info-active").siblings().removeClass("busi-info-active");
+	});
+	
+	//法人架构树形列表
+    $(document).ready(function(){
+    	legalZtree.getOrganization();
+    	//interfaceServer.getTreeAllData();
+    });
+    
+    //机构类型  高度赋值
+	/*var organitypeHeigth = $(window).height() - 66;
+  	$("#organitypedeleteObj").css("height",organitypeHeigth+"px");*/
+  	
+  	var ztreeOrganiHeight = $(window).height() - 200;
+  	$(".ztreeOrganiHeight").css("height",ztreeOrganiHeight+"px");
+  	
+  	var logModuleMainHeight = $(window).height() - 260;
+  	$("#logModuleMainHeight").css("height",logModuleMainHeight+"px");
+    	
+    //添加父节点
+	var addNode = $("#addLeaf");
+	addNode.click(function(){
+		electronicSignature.towshowORhidden(allLegalObj,addsave,legalPersonModify,null);
+		treeztreeNode = null;
+	});
+    
+    //法人架构取消 事件
+	cancelnode.click(function () {
+		$("#fName").val('');
+		electronicSignature.operationRequest(null,allLegalObj,null);
+	});
+	
+	//法人架构修改取消 事件
+    cancelLegal.click(function () {
+		electronicSignature.operationRequest(null,allLegalObj,null);
+	});
+	
+	//
+	var legalRootNode = $("#legalRootNode");
+	legalRootNode.click(function(){
+		$("#cancelParentId").val(0);
+		$("#hiddenParentId").val(0);
+	});
+	
+	//父级法人下拉框生成
+	$('#modifyDiv').hover(function(){
+		//鼠标放上去执行某动作  
+		var newnamewidth = $("#newname").width();
+    	$("#DropdownMenuBackground").width(newnamewidth + 13);
+    	$("#DropdownMenuBackground").show();
+    	ztreeList.ztreelistnode(dropdownMenuObj,1);
+	},function(){
+		//鼠标移开的时候执行某个动作
+		$("#DropdownMenuBackground").hide();
+	});
+	
+	//机构类型  添加表单
+	var addOrganitypeButton = $("#addOrganitypeButton");
+	addOrganitypeButton.click(function(){
+		electronicSignature.towshowORhidden(allBombObj,organitypeAddObj,organitypeModifyObj,null);
+		//electronicSignature.operationRequest(organitypeAddObj,organitypeModifyObj,null);
+	});
+	
+	 //机构类型修改 取消 按钮
+	var organitypeModifyCancelObj = $("#organitypeModifyCancel"); 
+	organitypeModifyCancelObj.click(function(){
+		electronicSignature.operationRequest(null,allBombObj,null);
+	});
+	
+	//机构类型 新增表单 取消 对象
+	var organitypeAddCancelObj = $("#organitypeAddCancel"); 
+	organitypeAddCancelObj.click(function(){
+		$("#name").val('');
+		electronicSignature.operationRequest(null,allBombObj,null);
+	});
+		
+	//显示机构类型模块
+	var SetTheType = $("#SetTheType");
+	SetTheType.click(function(){
+		//机构类型显示法人架构隐藏
+		electronicSignature.operationRequest(organitypedeleteObj,legalZtreeObj,logModuleObj);
+		//机构类型  数据请求
+		interfaceServer.getOrgType();
+	});
+	
+	//显示日志模块
+	var logModule = $("#logModule");
+	logModule.click(function(){
+		//机构类型显示法人架构隐藏
+		electronicSignature.operationRequest(logModuleObj,organitypedeleteObj,legalZtreeObj);
+		//日志信息查询
+		getLogModule.logInitialization();
+	});
+	
+	//显示法人架构模块
+	var legalZtreeId = $("#legalZtree");
+	legalZtreeId.click(function(){
+		//机构类型显示法人架构隐藏
+		electronicSignature.operationRequest(legalZtreeObj,logModuleObj,organitypedeleteObj);
+	});
+	
+	//日志搜索
+	var logSearchFor = $("#logSearchFor");
+	logSearchFor.click(function(){
+		start = 1;
+		var logSearchName = $("#logSearchName").val();
+		if (!isNull(logSearchName)) {
+			interfaceServer.getLogSearchFor(logSearchName,start);
+		} else {
+			interfaceServer.getLogSearch(start);	
+		}
+		
+	});
+    
+    
+	
+	// 日志分页递减合同
+	var logPreviousPagetObj = $("#logPreviousPage");
+	logPreviousPagetObj.click(function(){
+		start = start-1;
+		console.log(start);
+		if(start<=0){
+			//$("#logPreviousPage").addClass("isaddDisplayStyle");
+			start = start +1
+			return;
+		}
+		$("#pageIndexContract").html(start + '/' + totalPage);
+		if(isNull(start)){
+			return;
+		}
+		var tempVal = $("#logSearchName").val();
+		if(isNull(tempVal)){
+			interfaceServer.getLogSearch(start);	
+		} else {
+			interfaceServer.getLogSearchFor(tempVal,start);
+		}
+	});
+
+	// 日志分页递增合同
+	var logNextPageObj = $("#logNextPage");
+	logNextPageObj.click(function(){
+		start = start+1;
+		console.log(start);
+		if(start > totalPage){
+			start = start-1
+			return;
+		}
+		$("#logPagination").html(start + '/' + totalPage);
+		if(isNull(start)){
+			return;
+		}
+		var tempVal = $("#logSearchName").val();
+		if(isNull(tempVal)){
+			interfaceServer.getLogSearch(start);
+		} else {
+			interfaceServer.getLogSearchFor(tempVal,start);
+		}
+	});
+	
+	//页数跳转
+	var logModuleJump = $("#logModuleJump");
+	logModuleJump.click(function(){
+		//获取要跳转的页数
+		start = $("#logModuleValue").val();
+		start = Number(start);
+		//获取搜索的值
+		var tempVal = $("#logSearchName").val();
+		if(isNull(tempVal)){
+			if (start == 0) {
+				return;
+			} else {
+				interfaceServer.getLogSearch(start);
+			}
+		} else {
+			interfaceServer.getLogSearchFor(tempVal,start);
+		}
+	})
+	
+</script>
+

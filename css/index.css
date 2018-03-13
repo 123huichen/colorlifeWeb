@@ -1,0 +1,62 @@
+body{
+	font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB";
+	}
+			.main{
+				position: absolute;
+				width: 440px;
+				left: 35%;
+				top: 30%;
+				padding: 20px 40px;
+				background: rgba(255,255,255,0.5);
+				background-color: lightblue\0;
+				box-shadow: 1px 5px 8px #888888;
+				border-radius: 6px;
+			}
+			@media only screen and (min-width: 992px) and (max-width: 1200px) {
+				.main{
+					padding: 20px 40px;
+					left: 30%;
+				}
+			}
+			@media only screen and (min-width: 768px) and (max-width: 992px) {
+				.main{
+					padding: 20px 40px;
+					left: 25%;
+				}
+			}
+			@media (max-width:768px){
+				.main{
+					padding: 20px 20px;
+					left: 20%;
+				}
+			}
+			@media (max-width:768px){
+				.main{
+					padding: 20px 20px;
+					left: 20%;
+				}
+			}
+			.logo img{
+				vertical-align: middle;
+				margin: 0 auto 20px ;
+				display: block;
+			}
+			.input-group input{
+				height: 40px ;
+				font-size:18px ;
+			}
+			.yzm{
+				padding: 0;
+				border: none;
+			}
+			.yzm img{
+				width: 120px;
+				height: 39px;
+				border: none;
+				
+			}
+			.remember label{
+				margin-left: 15px;
+				font-weight: normal;
+			}
+	

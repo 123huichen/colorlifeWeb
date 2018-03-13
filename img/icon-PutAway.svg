@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
+<title>icon－收起</title>
+<g id="图层_2">
+	<g id="图层_1-2">
+		<path d="M3.7,4.3h15.7C19.7,4.3,20,4,20,3.6c0,0,0,0,0,0C20,3.3,19.7,3,19.4,3H3.7C3.3,3,3,3.2,3,3.6c0,0,0,0,0,0
+			C3,4,3.3,4.3,3.7,4.3C3.7,4.3,3.7,4.3,3.7,4.3z"/>
+		<path d="M19.4,9.3H3.7c-0.3,0-0.6,0.3-0.6,0.6c0,0.3,0.3,0.6,0.6,0.6h15.7c0.3,0,0.6-0.3,0.6-0.6C20,9.6,19.7,9.3,19.4,9.3z"/>
+		<path d="M19.4,15.8H3.7c-0.3,0-0.6,0.3-0.6,0.6c0,0.3,0.3,0.6,0.6,0.6h15.7c0.3,0,0.6-0.3,0.6-0.6C20,16,19.7,15.8,19.4,15.8z"/>
+		<path d="M19.4,15.5"/>
+		<ellipse cx="0.6" cy="10" rx="0.6" ry="0.6"/>
+		<ellipse cx="0.6" cy="16.4" rx="0.6" ry="0.6"/>
+		<ellipse cx="0.6" cy="3.6" rx="0.6" ry="0.6"/>
+	</g>
+</g>
+</svg>
